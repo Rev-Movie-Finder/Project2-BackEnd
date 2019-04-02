@@ -49,11 +49,11 @@
 			from scratch... then when the server is shut down, it
 			will purge the data again -->
 		<property name="hibernate.hbm2ddl.auto">
-			create
+			update
 		</property>
 		
 	
 		<mapping class="com.revature.model.User"/>
-		<mapping class="com.revature.model.Favorites"/>
+		<mapping class="com.revature.model.Movie"/>
 	</session-factory>
 </hibernate-configuration>

@@ -1,181 +1,132 @@
 package com.revature.dao;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Component;
+
 import com.revature.model.User;
 import com.revature.util.HibernateUtil;
 
-public class UserDaoImpl {
-
-
+@Component
+public class UserDaoImpl implements UserDao {
+	
+	
 	public List<User> getAllUsers() {
 		Session s = HibernateUtil.getSession();
-		List<User> users = s.createCriteria(User.class).list();
-		s.close();
-		return users;
-	}
-
-
-	public User getUserById(int id) {
+		List<User> events = null;
 		
+		try {
+			events = s.createCriteria(User.class).list();
+		} catch(HibernateException e) {
+			e.printStackTrace();
+		} finally {
+			s.close();
+		}
 		
-//		Session s = HibernateUtil.getSession();
-//
-//		User u = (User) s.get(User.class,);
-//		s.close();
-//		System.out.println("------------------pring user form dap" + u);
-//		return u;
-		
-	return null;
+		return events;
 	}
 
 	
-	public User createUser(User user) {
-	System.out.println("------>" + user);
+	public User getUserById(Integer id) {
+		Session s = HibernateUtil.getSession();
+		User u = null;
+		
+		try{
+			u = (User) s.get(User.class, id);
+		} catch(HibernateException e) {
+			e.printStackTrace();
+		} finally {
+			s.close();
+		}
+		
+		return u;
+	}
+
+	
+	public boolean createUser(User user) {
+		boolean created = false;
 		Session s = HibernateUtil.getSession();
 		Transaction tx = s.beginTransaction();
-		s.save(user);
-		tx.commit();
-		s.close();
-		
-		return getUserByUsername(user.getUsername());
-	}
-
-
-	public User updateUser(User change) {
-		Session session = HibernateUtil.getSession();
-		Transaction tx = null;
-		User user = null;
-		String passwordAmend  = new String(change.getPassword());
-		String emailAmend = new String(change.getEmail());
-		String avatarAmend = new String(change.getAvatar());
 		
 		try {
-			tx = session.beginTransaction();
-			user = (User)session.get(User.class, change);
+			s.save(user);
+			tx.commit();
+			created = true;
+		} catch(HibernateException e) {
+			e.printStackTrace();
+			tx.rollback();
+		} finally{
+			s.close();
+		}
+	
+		return created;
+	}
+
+	
+	public boolean updateUser(User change) {
+		boolean changed = false;
+		Session s = HibernateUtil.getSession();
+		Transaction tx = s.beginTransaction();
+		User u = null;
+		
+		try {
+			u = (User) s.get(User.class, change.getId());
 			
-			System.out.println("retireved user obj" + avatarAmend);
-			
-			if(change.getPassword() != null) {
-				
-				user.setPassword(passwordAmend);
-				
-			}	
 			if(change.getEmail() != null) {
-				user.setEmail(emailAmend);
-			}	
-			if(change.getAvatar() != null) {
-				user.setAvatar(avatarAmend);
+				u.setEmail(change.getEmail());
 			}
-		
-			session.update(change);
+			if(change.getUsername() != null) {
+				u.setUsername(change.getUsername());
+			}
+			if(change.getPassword() != null) {
+				u.setPassword(change.getPassword());
+			}
+			if(change.getBirthday() != null) {
+				u.setBirthday(change.getBirthday());
+			}
+			if(change.getFavoriteMovies() != null) {
+				u.setFavoriteMovies(change.getFavoriteMovies());
+			}
+			if(change.getWishList() != null) {
+				u.setWishList(change.getWishList());
+			}
+			
+			s.save(u);
 			tx.commit();
+			changed = true;
 		}catch(HibernateException e){
 			e.printStackTrace();
 			tx.rollback();			
 		}finally {
-			session.close();
-		} 
-		return user;
+			s.close();
+		}
 		
+		return changed;
 	}
 
-
-	public boolean deleteUser(User change) {
-		boolean operation =false;
-		Session session = HibernateUtil.getSession();
-		Transaction tx = null;
-		User user = null;
+	
+	public boolean deleteUserById(Integer id) {
+		boolean deleted = false;
+		Session s = HibernateUtil.getSession();
+		Transaction tx = s.beginTransaction();;
 		
 		try {
-			tx = session.beginTransaction();
-			
-			user = (User)session.get(User.class, change);
-			
-			session.delete(user);
-			
+			s.delete(s.get(User.class, id));
 			tx.commit();
-			operation =true;
-		}catch(HibernateException e){
+			
+			deleted = true;
+		} catch(HibernateException e) {
 			e.printStackTrace();
-			tx.rollback();			
-		}finally {
-			session.close();
+			tx.rollback();
+		} finally {
+			s.close();
 		}
-		return operation;
+		
+		return deleted;
 		
 	}
-
-	
-	public User getUserByUsername(String username) {
-		// TODO Auto-generated method stub
-		
-		Session s = HibernateUtil.getSession();		
-		Criteria crit = s.createCriteria(User.class);
-		crit.add(Restrictions.eq("username",username ));
-		List list = crit.list();
-		s.close();
-		Iterator itr = list.iterator();
-		User user = new User ();
-		
-		while (itr.hasNext()) {
-			user = (User) itr.next();}
-		
-		
-		
-		return user;
-		
-		
-		}
-	
-	
-	
-	public List <User> validateUser( User user) {
-		
-		List <User> userArray = new ArrayList<User>();
-
-	     
-		   
-	      User foundUser = getUserByUsername(user.getUsername().toLowerCase());
-	      
-	     
-	      
-	        if ((foundUser.getUsername() != null) && (foundUser.getPassword().equals(user.getPassword())) ) {
-	        	
-	        	System.out.println("verified pass!!!");
-	        	
-	        	
-	        	userArray.add(foundUser);
-	        	return userArray;
-	    	
-	        }
-	 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		return null;
-	}
-	
-	
-	
-	
-	
-	
-	
 
 }
