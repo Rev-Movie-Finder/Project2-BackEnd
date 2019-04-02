@@ -19,8 +19,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
+import org.springframework.stereotype.Component;
+@Component
 @Entity
+@Table(name="users")
 public class User implements Serializable {
 
 	
@@ -68,6 +72,32 @@ public class User implements Serializable {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name="user_favorite_JT", joinColumns=@JoinColumn(name="u_id"), inverseJoinColumns=@JoinColumn(name="f_id"))
 	private List<Favorites> favs = new ArrayList<Favorites>();
+
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+	
+	public User(int userId, String firstName, String lastName, String username, String password, String avatar,
+			String email, Date birthday, com.revature.model.Gender gender, Favorites...ats) {
+		super();
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.username = username;
+		this.password = password;
+		this.avatar = avatar;
+		this.email = email;
+		this.birthday = birthday;
+		Gender = gender;
+		for(Favorites f : ats) {
+			System.out.println(">>>>>>>" +f);
+			favs.add(f);
+		}
+	}
+
 
 	public int getUserId() {
 		return userId;

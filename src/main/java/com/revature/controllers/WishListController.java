@@ -19,20 +19,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.revature.exceptions.UserNotFoundException;
-import com.revature.model.Favorites;
-import com.revature.service.FavoritesService;
+import com.revature.model.WishList;
 import com.revature.service.UserService;
+import com.revature.service.WishListService;
 
 @CrossOrigin
 @Controller
-public class FavoritesController {
+public class WishListController {
 	
 	@Autowired
-	FavoritesService fService;
+	WishListService wService;
 	
-	@GetMapping("/favorites")
+	@GetMapping("/wish")
 	@ResponseBody
-	public List<Favorites> getFavoritesBytUserId(@RequestParam(value="id",required=false)Integer id){
+	public List<WishList> getwishBytUserId(@RequestParam(value="id",required=false)Integer id){
 		if(id!=null) {
 			
 			System.out.println("----------------->in /fService");
@@ -42,7 +42,7 @@ public class FavoritesController {
 //			} else {
 //				ArrayList<Favorites> favs = new ArrayList<Favorites>();
 //				favs.add(c);
-				return  fService.getFavoritesByUserId(id);
+				return  wService.getWishListsByUserId(id);
 			}
 		
 		return null;
@@ -60,29 +60,29 @@ public class FavoritesController {
 	
 	@PostMapping("/fav/new")
 	@ResponseBody
-	public Favorites returnNewUserPage( @RequestBody Favorites favs) {
-		System.out.println("checking for favorites... " + favs);
-		 System.out.println("in /new " + favs);
+	public WishList returnNewUserPage( @RequestBody WishList wish) {
+		System.out.println("checking for WishList... " + wish);
+		 System.out.println("in /new " + wish);
 			 
-		return  fService.create(favs);
+		return  wService.create(wish);
 	}
 	
 	
 
 	
-	@PostMapping("/fav/delete")
+	@PostMapping("/wish/delete")
 	@ResponseBody
-	public boolean deleteFavorites( @RequestBody Favorites favs) {
+	public boolean deleteWishList( @RequestBody WishList wish) {
 		
 		
-		System.out.println(favs);
+		System.out.println(wish);
 		
 		 System.out.println("in /delete");
 	 
  
 		 
 		 
-		return fService.deleteFavorites(favs);
+		return wService.deleteWishList(wish);
 		
 	}
 	

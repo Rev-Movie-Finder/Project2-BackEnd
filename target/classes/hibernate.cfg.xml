@@ -54,5 +54,6 @@
 		
 	
 		<mapping class="com.revature.model.User"/>
+		<mapping class="com.revature.model.Favorites"/>
 	</session-factory>
 </hibernate-configuration>

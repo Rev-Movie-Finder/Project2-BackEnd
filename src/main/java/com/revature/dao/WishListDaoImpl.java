@@ -10,17 +10,17 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import com.revature.model.Favorites;
 import com.revature.model.User;
+import com.revature.model.WishList;
 import com.revature.util.HibernateUtil;
 
-public class FavoritesDaoImpl {
+public class WishListDaoImpl {
 
 
 	
 
 
-	public List <Favorites> getFavoritesByUserId(int id) {
+	public List <WishList> getWishListByUserId(int id) {
 		
 		
 //		Session s = HibernateUtil.getSession();
@@ -36,11 +36,11 @@ public class FavoritesDaoImpl {
 		List list = crit.list();
 		s.close();
 		Iterator itr = list.iterator();
-		Favorites user = new Favorites ();
-		List <Favorites> fvList = new ArrayList<Favorites>();
+		WishList user = new WishList ();
+		List <WishList> fvList = new ArrayList<WishList>();
 		System.out.println("<<<<<<<beforeloop>>>>>>>>");
 		while (itr.hasNext()) {
-			Favorites fvl = (Favorites) itr.next();
+			WishList fvl = (WishList) itr.next();
 			fvList.add(fvl);
 			System.out.println("<<<<<<<inloop>>>>>>>>" + fvl.getMovie_id());
 			
@@ -56,30 +56,30 @@ public class FavoritesDaoImpl {
 	}
 
 	
-	public Favorites createFavorites(Favorites fav) {
-	System.out.println("------>" + fav);
+	public WishList createWishList(WishList wish) {
+	System.out.println("------>" + wish);
 		Session s = HibernateUtil.getSession();
 		Transaction tx = s.beginTransaction();
-		s.save(fav);
+		s.save(wish);
 		tx.commit();
 		s.close();
 		
-		return fav;
+		return wish;
 	}
 
 
 
 
-	public boolean deleteFavorites(Favorites change) {
+	public boolean deleteWishList(WishList change) {
 		boolean operation =false;
 		Session session = HibernateUtil.getSession();
 		Transaction tx = null;
-		Favorites fav = null;
+		WishList fav = null;
 		
 		try {
 			tx = session.beginTransaction();
 			
-			fav = (Favorites)session.get(Favorites.class, change);
+			fav = (WishList)session.get(WishList.class, change);
 			
 			session.delete(fav);
 			

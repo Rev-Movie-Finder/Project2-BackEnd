@@ -74,8 +74,8 @@ public class UserController {
 	@PostMapping("/new")
 	@ResponseBody
 	public User returnNewUserPage( @RequestBody User user) {
-		
-		 System.out.println("in /new");
+		System.out.println("checking for favorites... " + user.getFavs());
+		 System.out.println("in /new " + user);
 			 
 		return  uService.create(user);
 	}

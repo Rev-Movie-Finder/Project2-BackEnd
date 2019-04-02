@@ -38,6 +38,7 @@ public class UserDaoImpl {
 
 	
 	public User createUser(User user) {
+	System.out.println("------>" + user);
 		Session s = HibernateUtil.getSession();
 		Transaction tx = s.beginTransaction();
 		s.save(user);
