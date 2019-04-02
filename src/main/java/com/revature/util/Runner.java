@@ -1,51 +1,35 @@
 package com.revature.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.revature.dao.MovieDao;
+import com.revature.dao.MovieDaoImpl;
+import com.revature.dao.UserDao;
 import com.revature.dao.UserDaoImpl;
-import com.revature.model.Favorites;
+import com.revature.model.Movie;
 import com.revature.model.User;
 
 public class Runner {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
+		UserDao ud = new UserDaoImpl();
+		MovieDao md = new MovieDaoImpl();
 		
+		User user1 = new User("shimjay1@gmail.com", "magikarp", "123");
+		User user2 = new User("hello@gmail.com", "yo", "123");
 		
-		User user = new User();
-		user.setUserId(1);
-		user.setFirstName("Abbi");
-		user.setLastName("Brader");
-		user.setUsername("wewjjwjw");
+		Movie movie1 = new Movie(100);
+		Movie movie2 = new Movie(101);
+	
+		md.createMovie(movie1);
+		md.createMovie(movie2);
 		
+		user1.addFavoriteMovies(movie1);
+		user1.addWishList(movie2);
+		user2.addFavoriteMovies(movie1);
 		
-		Favorites fs = new Favorites();
-		fs.setF_id(1);
-		fs.setMovie_id(1);
+		ud.createUser(user1);
+		ud.createUser(user2);
 		
-//		List<Favorites> fList = new ArrayList<Favorites>();
-//		fList.add(fs);
-		
-		//user.setFavs(fList);
-		List<Favorites> someList = user.getFavs();
-		someList.add(fs);
-		
-		System.out.println("printi guser" + user);
-		UserDaoImpl udl = new UserDaoImpl();
-		System.out.println(udl.createUser(user));
-		
-		
-		//sds
-		
-		
-		
-		
-		
-		
-		
-
 	}
 
 }

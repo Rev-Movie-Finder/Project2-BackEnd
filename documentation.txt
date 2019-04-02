@@ -1,0 +1,38 @@
+++++++++++++++++++++++
++    HTTP REQUESTS   +
+++++++++++++++++++++++
+
+FULL URL = [EC2 Tomcat IP] : [PORT] / [context path] / [endpoint] / [PATH VARIABLE] + [PARAMS] 
+
+*EC2 Tomcat IP, Port, and Context Path should be constant throughout the application.
+
+ex.
+	http://3.91.247.175:8085/Rev-Movie-Finder-Spring/users/50
+	- GET request to the above would give you the information for user with id 50
+
+++++++++++++++++++++++
++     CONTROLLER     +
+++++++++++++++++++++++
+
+1. User Controller: handles all user information (including user's favorite and wish list)
+[Endpoint] = "/users"
+
+Requests:
+[ReturnType : Method : PathVariable : info] = {
+	
+	List<User>	:	GET		:	"/" 						:  	Get all Users in the database
+	User		:	GET		:	"/{id}"						: 	Get the user with {id}
+	boolean		:	POST	:	"/"	+ RequestBody[User]		:	Create user of the given RequestBody
+	boolean		:	POST	:	"/{id}/favorite" + RB[Movie]:	Creates a movie id reference and adds that reference to the user's favorite list
+	boolean		:	POST	:	"/{id}/wish" + RB[Movie]	:	Creates a movie id reference and adds that reference to the user's wish list
+	boolean		:	PUT		:	"/{id}"	+ RB[User]			:	Updates user with {id} with information of the RequestBody User Object
+	boolean		:	DELETE	:	"/{id}"						:	Deletes the user with {id}
+	
+}
+
+ex.
+
+Things To Note:
+	- Adding to a user's favorite/wish list without using "/{id}/{favorite or wish}" will not work. Thus, use <-- for adding to user's favorite/wish list.
+	- Deleting from a user's favorite/wish list: use the GET request of a user, remove the movie that you want to remove from its list, then make a PUT request to update that user.
+	- You can create (POST) a user by having just the email, username, and password in the RequestBody. This fill in the rest of the properties with either empty, null, or default values.
