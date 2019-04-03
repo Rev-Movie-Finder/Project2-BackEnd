@@ -76,29 +76,33 @@ public class UserController {
 
 		return ud.createUserWithReturn(user);
 	}
-	
+
 	@PostMapping(value = "/login")
-	public Object login(@RequestBody User user) {
-
-		if (user.getUsername().toLowerCase() == null || user.getUsername().toLowerCase().equals(""))
-			return "please provide username";
-		if (user.getUsername().length() < 3)
-			return "Characters for username must be greater than 3";
-
+	public List<User> login(@RequestBody User user) {
 		List<User> users = ud.getAllUsers();
+
+		if (user.getUsername().toLowerCase() == null || user.getUsername().toLowerCase().equals("")
+				|| user.getUsername().length() < 3) {
+			users.clear();
+			return users;
+		}
 
 		for (User u : users) {
 			if ((u.getUsername().toLowerCase().equals(user.getUsername().toLowerCase()))) {
-				
+
 				if ((u.getPassword().equals(user.getPassword()))) {
-				       return u;
-				
+					users.clear();
+					users.add(u);
+
+					return users;
+
 				}
 			}
 
 		}
 
-		return "Wrong Password or username";
+		users.clear();
+		return users;
 	}
 	
 	@PostMapping(value="/{id}/favorite")
