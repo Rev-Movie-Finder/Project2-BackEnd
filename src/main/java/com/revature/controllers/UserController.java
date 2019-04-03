@@ -80,7 +80,7 @@ public class UserController {
 	@PostMapping(value = "/login")
 	public Object login(@RequestBody User user) {
 
-		if (user.getUsername().to == null || user.getUsername().equals(""))
+		if (user.getUsername().toLowerCase() == null || user.getUsername().toLowerCase().equals(""))
 			return "please provide username";
 		if (user.getUsername().length() < 3)
 			return "Characters for username must be greater than 3";
