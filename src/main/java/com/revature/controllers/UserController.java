@@ -51,6 +51,55 @@ public class UserController {
 		}
 		return ud.createUser(user);
 	}
+
+	@PostMapping(value = "/create")
+	public Object createUserAlternative(@RequestBody User user) {
+
+		if (user.getUsername() == null)
+			return "please provide username";
+		if (user.getPassword() == null)
+			return "please provide password";
+		if (user.getUsername().length() < 3)
+			return "Characters for username must be greater than 3";
+		if (user.getPassword().length() < 3)
+			return "Characters for password must be greater than 3";
+
+		List<User> users = ud.getAllUsers();
+
+		for (User u : users) {
+			if ((u.getUsername().equals(user.getUsername()))) {
+				users.clear();
+				return users;
+			}
+
+		}
+
+		return ud.createUserWithReturn(user);
+	}
+	
+	@PostMapping(value = "/login")
+	public Object login(@RequestBody User user) {
+
+		if (user.getUsername().to == null || user.getUsername().equals(""))
+			return "please provide username";
+		if (user.getUsername().length() < 3)
+			return "Characters for username must be greater than 3";
+
+		List<User> users = ud.getAllUsers();
+
+		for (User u : users) {
+			if ((u.getUsername().toLowerCase().equals(user.getUsername().toLowerCase()))) {
+				
+				if ((u.getPassword().equals(user.getPassword()))) {
+				       return u;
+				
+				}
+			}
+
+		}
+
+		return "Wrong Password or username";
+	}
 	
 	@PostMapping(value="/{id}/favorite")
 	public boolean addFavoriteToUser(@PathVariable("id") Integer id, @RequestBody Movie movie){
