@@ -54,47 +54,65 @@ public class UserController {
 	
 	@PostMapping(value="/{id}/favorite")
 	public boolean addFavoriteToUser(@PathVariable("id") Integer id, @RequestBody Movie movie){
-		List<User> users = ud.getAllUsers();
 		User user = ud.getUserById(id);
+		
 		if(user != null) {
-			for(User u : users) {
-				if(u.getId().equals(user.getId())) {
-					List<Movie> movies = md.getAllMovies();
-					for(Movie m : movies) {
-						if(m.getId().equals(movie.getId())) {
-							user.addFavoriteMovies(movie);
-							return ud.updateUser(user);
-						}
+			System.out.println("Adding to Favorite: Found user (" + user.getUsername() + ") with id: " + user.getId());
+			boolean exists = false;
+			List<Movie> allMovies = md.getAllMovies();
+			
+			if(movie.getId() != null) {
+				for(Movie m : allMovies) {
+					System.out.println("Adding to Favorite: Looking for movie with id (" + movie.getId() + "). Current: " + m.getId());
+					if(m.getId().equals(movie.getId())) {
+						System.out.println("Adding to Favorite: Found movie with id: " + m.getId());
+						exists = true;
+						movie = m;
 					}
-					md.createMovie(movie);
-					user.addFavoriteMovies(movie);
-					return ud.updateUser(user);
 				}
 			}
+			if(!exists) {
+				System.out.println("Adding to Favorite: Could not find movie. Adding Movie to Database");
+				md.createMovie(movie);
+			}
+			System.out.println("Adding to Favorite: Appending movie (" + movie + ") to user:\n" + user);
+			user.addFavoriteMovies(movie);
+			
+			return ud.updateUser(user);
 		}
+		
 		return false;
 	}
 	
 	@PostMapping(value="/{id}/wish")
 	public boolean addWishToMovie(@PathVariable("id") Integer id, @RequestBody Movie movie){
-		List<User> users = ud.getAllUsers();
 		User user = ud.getUserById(id);
+		
 		if(user != null) {
-			for(User u : users) {
-				if(u.getId().equals(user.getId())) {
-					List<Movie> movies = md.getAllMovies();
-					for(Movie m : movies) {
-						if(m.getId().equals(movie.getId())) {
-							user.addWishList(movie);
-							return ud.updateUser(user);
-						}
+			System.out.println("Adding to Wish: Found user (" + user.getUsername() + ") with id: " + user.getId());
+			boolean exists = false;
+			List<Movie> allMovies = md.getAllMovies();
+			
+			if(movie.getId() != null) {
+				for(Movie m : allMovies) {
+					System.out.println("Adding to Wish: Looking for movie with id (" + movie.getId() + "). Current: " + m.getId());
+					if(m.getId().equals(movie.getId())) {
+						System.out.println("Adding to Wish: Found movie with id: " + m.getId());
+						exists = true;
+						movie = m;
 					}
-					md.createMovie(movie);
-					user.addWishList(movie);
-					return ud.updateUser(user);
 				}
 			}
+			if(!exists) {
+				System.out.println("Adding to Wish: Could not find movie. Adding Movie to Database");
+				md.createMovie(movie);
+			}
+			System.out.println("Adding to Wish: Appending movie (" + movie + ") to user:\n" + user);
+			user.addWishList(movie);
+			
+			return ud.updateUser(user);
 		}
+		
 		return false;
 	}
 	

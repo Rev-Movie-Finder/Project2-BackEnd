@@ -20,13 +20,6 @@ public class Runner {
 		User user4 = new User("tester4@gmail.com", "tester4", "ah!ha");
 		User user5 = new User("tester5@gmail.com", "tester5", "gotem");
 		
-		Movie movie1 = new Movie(100);
-	
-		md.createMovie(movie1);;
-		
-		user1.addFavoriteMovies(movie1);
-		user2.addFavoriteMovies(movie1);
-		
 		ud.createUser(user1);
 		ud.createUser(user2);
 		ud.createUser(user3);

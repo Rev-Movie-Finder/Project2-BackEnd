@@ -14,12 +14,13 @@ import com.revature.util.HibernateUtil;
 public class UserDaoImpl implements UserDao {
 	
 	
+	@SuppressWarnings("unchecked")
 	public List<User> getAllUsers() {
 		Session s = HibernateUtil.getSession();
 		List<User> events = null;
 		
 		try {
-			events = s.createCriteria(User.class).list();
+			events = s.createQuery("From User").list();
 		} catch(HibernateException e) {
 			e.printStackTrace();
 		} finally {
@@ -74,6 +75,7 @@ public class UserDaoImpl implements UserDao {
 		
 		try {
 			u = (User) s.get(User.class, change.getId());
+			System.out.println("Update User: Updating user of id: " + u.getId());
 			
 			if(change.getEmail() != null) {
 				u.setEmail(change.getEmail());
@@ -88,6 +90,7 @@ public class UserDaoImpl implements UserDao {
 				u.setBirthday(change.getBirthday());
 			}
 			if(change.getFavoriteMovies() != null) {
+				System.out.println("Update User: Setting User's favorite to: " + change.getFavoriteMovies());
 				u.setFavoriteMovies(change.getFavoriteMovies());
 			}
 			if(change.getWishList() != null) {
@@ -97,6 +100,8 @@ public class UserDaoImpl implements UserDao {
 			s.save(u);
 			tx.commit();
 			changed = true;
+			System.out.println("Update User: User with id (" + u.getId() + ") has been updated.");
+			System.out.println("Update User: User now looks like:\n" + u);
 		}catch(HibernateException e){
 			e.printStackTrace();
 			tx.rollback();			

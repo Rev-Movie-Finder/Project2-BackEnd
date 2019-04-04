@@ -145,6 +145,12 @@ public class User {
 	public void addWishList(Movie movie) {
 		this.wishList.add(movie);
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", username=" + username + ", password=" + password
+				+ ", birthday=" + birthday + ", favoriteMovies=" + favoriteMovies + ", wishList=" + wishList + "]";
+	}
 	
 
 
