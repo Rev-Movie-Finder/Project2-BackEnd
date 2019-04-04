@@ -49,7 +49,7 @@
 			from scratch... then when the server is shut down, it
 			will purge the data again -->
 		<property name="hibernate.hbm2ddl.auto">
-			create
+			validate
 		</property>
 		
 	
