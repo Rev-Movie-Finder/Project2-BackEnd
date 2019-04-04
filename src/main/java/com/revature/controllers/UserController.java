@@ -84,6 +84,34 @@ public class UserController {
 		return false;
 	}
 	
+	@PostMapping(value = "/login")
+	public List<User> login(@RequestBody User user) {
+		List<User> users = ud.getAllUsers();
+
+		if (user.getUsername().toLowerCase() == null || user.getUsername().toLowerCase().equals("")
+				|| user.getUsername().length() < 3) {
+			users.clear();
+			return users;
+		}
+
+		for (User u : users) {
+			if ((u.getUsername().toLowerCase().equals(user.getUsername().toLowerCase()))) {
+
+				if ((u.getPassword().equals(user.getPassword()))) {
+					users.clear();
+					users.add(u);
+
+					return users;
+
+				}
+			}
+
+		}
+
+		users.clear();
+		return users;
+	}
+	
 	@PostMapping(value="/{id}/wish")
 	public boolean addWishToMovie(@PathVariable("id") Integer id, @RequestBody Movie movie){
 		User user = ud.getUserById(id);

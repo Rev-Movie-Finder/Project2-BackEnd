@@ -65,6 +65,24 @@ public class UserDaoImpl implements UserDao {
 	
 		return created;
 	}
+	public User createUserWithReturn(User user) {
+		boolean created = false;
+		Session s = HibernateUtil.getSession();
+		Transaction tx = s.beginTransaction();
+		
+		try {
+			s.save(user);
+			tx.commit();
+			created = true;
+		} catch(HibernateException e) {
+			e.printStackTrace();
+			tx.rollback();
+		} finally{
+			s.close();
+		}
+	
+		return user;
+	}
 
 	
 	public boolean updateUser(User change) {
