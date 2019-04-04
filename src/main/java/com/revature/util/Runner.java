@@ -4,10 +4,14 @@ import com.revature.dao.MovieDao;
 import com.revature.dao.MovieDaoImpl;
 import com.revature.dao.UserDao;
 import com.revature.dao.UserDaoImpl;
+import com.revature.model.Movie;
 import com.revature.model.User;
+import org.apache.log4j.Logger;
 
 public class Runner {
 
+	private static Logger log = Logger.getRootLogger();
+	
 	public static void main(String[] args) {
 		
 		UserDao ud = new UserDaoImpl();
@@ -18,6 +22,13 @@ public class Runner {
 		User user3 = new User("Person@gmail.com", "friend", "!!!");
 		User user4 = new User("FriendofPerson@gmail.com", "yuppers", "ah!ha");
 		User user5 = new User("dudeman@gmail.com", "duders", "gotem");
+		
+		Movie movie1 = new Movie(100);
+	
+		md.createMovie(movie1);;
+		
+		user1.addFavoriteMovies(movie1);
+		user2.addFavoriteMovies(movie1);
 		
 		ud.createUser(user1);
 		ud.createUser(user2);
