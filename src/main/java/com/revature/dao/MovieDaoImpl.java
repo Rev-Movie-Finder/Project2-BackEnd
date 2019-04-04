@@ -52,6 +52,7 @@ public class MovieDaoImpl implements MovieDao {
 		Transaction tx = s.beginTransaction();
 		
 		try {
+			System.out.println("Create Movie: creating movie: " + movie);
 			s.save(movie);
 			tx.commit();
 			created = true;
