@@ -45,7 +45,7 @@ public class UserController {
 	public boolean createUser(@RequestBody User user){
 		List<User> users = ud.getAllUsers();
 		for(User u : users) {
-			if(u.getId() == user.getId()) {
+			if(u.getId().equals(user.getId())) {
 				return false;
 			}
 		}
@@ -58,7 +58,7 @@ public class UserController {
 		User user = ud.getUserById(id);
 		if(user != null) {
 			for(User u : users) {
-				if(u.getId() == user.getId()) {
+				if(u.getId().equals(user.getId())) {
 					List<Movie> movies = md.getAllMovies();
 					for(Movie m : movies) {
 						if(m.getId().equals(movie.getId())) {
@@ -81,7 +81,7 @@ public class UserController {
 		User user = ud.getUserById(id);
 		if(user != null) {
 			for(User u : users) {
-				if(u.getId() == user.getId()) {
+				if(u.getId().equals(user.getId())) {
 					List<Movie> movies = md.getAllMovies();
 					for(Movie m : movies) {
 						if(m.getId().equals(movie.getId())) {
@@ -102,7 +102,7 @@ public class UserController {
 	public boolean updateUser(@PathVariable("id") Integer id, @RequestBody User user) {
 		List<User> users = ud.getAllUsers();
 		for(User u : users) {
-			if(u.getId() == id) {
+			if(u.getId().equals(id)) {
 				user.setId(id);
 				return ud.updateUser(user);
 			}
@@ -114,7 +114,7 @@ public class UserController {
 	public boolean deleteUser(@PathVariable("id") Integer id) {
 		List<User> users = ud.getAllUsers();
 		for(User u : users) {
-			if(u.getId() == id) {
+			if(u.getId().equals(id)) {
 				return ud.deleteUserById(id);
 			}
 		}
